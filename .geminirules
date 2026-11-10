@@ -1,0 +1,39 @@
+# UI/UX & Frontend Architecture Rules: Direct-Response & Minimalist Clean
+
+## 1. Diretrizes de Comportamento do Agente (Zero "AI Slop")
+
+- Proibido o uso de gradientes genéricos de IA (ex: purple-to-blue, indigo-to-violet).
+- Proibido o uso de sombras difusas e excessivas (ex: `shadow-xl`, `shadow-2xl` com blur alto).
+- Proibido cantos desproporcionais ou inconsistentes (evitar `rounded-3xl` em elementos comuns).
+- Proibido o uso de cores utilitárias arbitrárias soltas no código. Siga rigorosamente a paleta semântica definida.
+- Priorize sempre soluções semânticas com HTML5 nativo, CSS/Tailwind enxuto e foco em conversão mobile-first.
+
+## 2. Paleta de Cores e Tokens Obrigatórios
+
+- Fundo Principal (Canvas): Neutro/Off-white quente (`#F9FAFB` ou `#FBFBFC`).
+- Superfície de Cartões / Containers: Branco puro (`#FFFFFF`).
+- Linhas e Divisórias: Borda sutil de 1px (`#E5E7EB` / `border-zinc-200/80`).
+- Tipografia Primária (Títulos e Destaque): Vermelho Editorial de Alto Contraste (`#DC2626` / `#B91C1C`) e Preto Grafite (`#111827`).
+- Tipografia Secundária (Corpo de Texto): Cinza neutro legível (`#4B5563` / `#6B7280`).
+- Ação Principal (CTA / Destaques): Vermelho de Conversão (`#E11D48` ou `#DC2626`) com texto branco e cantos arredondados controlados (`rounded-xl` ou `rounded-lg`).
+
+## 3. Tipografia & Ritmo Visual
+
+- Família Tipográfica: Sans-serif moderna e geométrica (ex: Inter, Plus Jakarta Sans ou Satoshi).
+- Títulos (H1, H2, H3): Peso bold/extrabold (`font-bold` / `font-extrabold`), tracking levemente condensado (`tracking-tight`), alinhamento centralizado nas secções de impacto.
+- Microcópias e Avisos: Fontes pequenas com tracking espaçado e caixa alta pontual (`text-xs uppercase tracking-wider`).
+- Espaçamento Vertical: Ritmo consistente com base na escala de 8px (paddings de secção entre `py-12` e `py-20` no mobile).
+
+## 4. Padrões de Componentes Obrigatórios
+
+- **Top Scarcity Banner:** Faixa superior fixa ou estática de alerta com fundo de contraste vermelho (`bg-red-700`) e texto branco legível.
+- **Social Proof Pill:** Cartão flutuante ou contido com avatares sobrepostos, estrelas de avaliação e tipografia sutil de validação social.
+- **FAQ Accordions:** Cartões individuais isolados (`bg-white border rounded-2xl`), nunca uma lista contínua sem contorno. Ícone minimalista de expansão (`+` que roda para `×` ou `chevron-down`).
+- **Sticky Conversion Bar (Mobile):** Barra de rodapé fixa no ecrã com microcópia à esquerda (logo/nome + resumo) e botão de ação direta (CTA) à direita com ícone direcional.
+- **Brand Hero / Footer:** Secções sólidas com blocos de cor institucional pura (vermelho vivo `#DC2626`), tipografia branca e sem ruído decorativo.
+
+## 5. Engenharia e Código
+
+- Respeite acessibilidade semântica (ARIA tags em acordeões, botões e formulários).
+- Evite bibliotecas externas pesadas para microinterações; prefira estados de CSS nativos ou Vanilla JavaScript limpo para interações simples como aberturas e toggles.
+- Todo e qualquer novo ecrã ou secção deve alinhar-se à estética minimalista editorial definida neste documento.

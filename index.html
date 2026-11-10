@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>Solar | SolarOS</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tipografia: Plus Jakarta Sans (Geométrica, moderna e editorial) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                screens: {
+                    'xs': '400px',
+                    'sm': '640px',
+                    'md': '768px',
+                    'lg': '1024px',
+                },
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            red: '#1F882D',      /* Cor de Conversão Solar (.geminirules) */
+                            darkred: '#176922',
+                            canvas: '#F9FAFB',   /* Canvas Off-white neutro e limpo */
+                            surface: '#FFFFFF',
+                            border: '#E5E7EB',   /* Borda física precisa de 1px */
+                            text: '#111827',     /* Preto Grafite editorial */
+                            muted: '#4B5563',    /* Cinza neutro legível */
+                            subtle: '#6B7280'
+                        }
+                    },
+                    boxShadow: {
+                        'hairline': '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
+                        'lift': '0 4px 16px -2px rgba(0, 0, 0, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #F9FAFB;
+            color: #111827;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Acordeão moderno via CSS Grid: fluido, sem saltos e sem corte de texto */
+        .faq-accordion-body {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 240ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .faq-item[aria-expanded="true"] .faq-accordion-body {
+            grid-template-rows: 1fr;
+        }
+
+        .faq-item .faq-icon {
+            transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .faq-item[aria-expanded="true"] .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        /* Suporte a Safe Area para iPhone/Android com barra gestual */
+        .safe-bottom {
+            padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+        }
+
+        /* Melhoria de ergonomia de toque mobile */
+        button, a {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-28 sm:pb-24 selection:bg-emerald-100 selection:text-brand-red">
+
+    <!-- 1. Top Bar de Alerta / Escassez -->
+    <div class="w-full bg-brand-red text-white text-[10px] xs:text-[11px] sm:text-xs font-bold tracking-wider text-center py-2 px-3 sm:px-4 uppercase select-none sticky top-0 z-40 shadow-sm">
+        OFERTA ESPECIAL VÁLIDA HOJE <span id="current-date" class="tabular-nums font-extrabold">09/11/2026</span>!
+    </div>
+
+    <!-- 2. Header Minimalista -->
+    <header class="w-full max-w-xl mx-auto px-4 sm:px-6 pt-6 sm:pt-7 pb-4 flex items-center justify-center">
+        <div class="flex items-center gap-2 sm:gap-2.5">
+            <div class="flex items-center gap-1.5">
+                <svg class="w-5 h-5 text-brand-red flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4 10l8 4-8 4v-8zm8-6l8 6-8 6V4z" />
+                </svg>
+                <span class="font-extrabold text-lg sm:text-xl tracking-tight text-zinc-950 uppercase">Solar</span>
+            </div>
+            <span class="text-zinc-300 text-lg font-light select-none" aria-hidden="true">|</span>
+            <span class="font-semibold text-base sm:text-lg tracking-tight text-zinc-700">SolarOS</span>
+        </div>
+    </header>
+
+    <!-- 3. Container Principal Centralizado -->
+    <main class="w-full max-w-xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col items-center flex-grow">
+
+        <!-- Social Proof Pill / Avaliações -->
+        <div class="w-full bg-white border border-zinc-200/90 rounded-2xl py-3 px-3.5 sm:px-4 shadow-hairline flex flex-col items-center gap-2 mb-7 sm:mb-8 text-center">
+            <div class="flex flex-wrap items-center justify-center gap-1.5 text-xs text-zinc-700 leading-snug">
+                <div class="flex text-brand-red text-sm tracking-tight leading-none select-none" aria-label="Avaliação 5 de 5 estrelas">
+                    ★★★★★
+                </div>
+                <span class="text-[11px] xs:text-xs">Avaliado como excelente por <strong class="text-zinc-900 font-semibold whitespace-nowrap">mais de 900 profissionais</strong></span>
+            </div>
+
+            <!-- Avatares com anel branco -->
+            <div class="flex -space-x-1.5 sm:-space-x-2 py-0.5 select-none" aria-hidden="true">
+                <img class="inline-block h-6 w-6 sm:h-7 sm:w-7 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces" alt="" loading="lazy">
+                <img class="inline-block h-6 w-6 sm:h-7 sm:w-7 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" alt="" loading="lazy">
+                <img class="inline-block h-6 w-6 sm:h-7 sm:w-7 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces" alt="" loading="lazy">
+                <img class="inline-block h-6 w-6 sm:h-7 sm:w-7 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces" alt="" loading="lazy">
+                <img class="inline-block h-6 w-6 sm:h-7 sm:w-7 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=faces" alt="" loading="lazy">
+            </div>
+        </div>
+
+        <!-- Headline Principal -->
+        <h1 class="text-[26px] xs:text-3xl sm:text-4xl font-extrabold text-center tracking-tight leading-[1.18] sm:leading-[1.15] text-brand-red mb-4 sm:mb-5">
+            Tenha 100 anos<br>
+            de copywriting<br>
+            dentro da sua IA ✍️
+        </h1>
+
+        <!-- Subtítulo / Lead -->
+        <p class="text-center text-zinc-600 text-sm sm:text-base leading-relaxed mb-4 max-w-lg">
+            O SolarOS é um kit de skills para Claude e ChatGPT que aplica os princípios de Ogilvy, Schwartz, Halbert, Hormozi e outros grandes nomes do copywriting para transformar textos genéricos em mensagens autorais de alta conversão.
+        </p>
+
+        <a href="#faq" class="text-xs sm:text-sm text-zinc-600 hover:text-zinc-900 transition-colors mb-8 sm:mb-10 inline-flex items-center gap-1 group py-1">
+            <span>Não sabe o que é uma skill?</span>
+            <span class="text-brand-red font-semibold underline underline-offset-4 group-hover:text-brand-darkred">Clique aqui.</span>
+        </a>
+
+        <!-- Bloco Ilustrativo / Mockup do Produto -->
+        <div class="w-full bg-white border border-zinc-200/90 rounded-2xl p-3.5 sm:p-6 mb-12 sm:mb-16 text-center shadow-hairline">
+            <div class="w-full aspect-[16/10] bg-zinc-50 rounded-xl border border-dashed border-zinc-300/80 flex flex-col items-center justify-center p-3 sm:p-4">
+                <span class="text-zinc-400 font-mono text-[10px] xs:text-[11px] mb-3 uppercase tracking-widest text-center">[ Arte / Mockup do Kit SolarOS ]</span>
+                <div class="flex flex-wrap items-center justify-center gap-1.5 text-zinc-800 font-medium text-xs">
+                    <span class="px-2.5 py-1 bg-white rounded-md border border-zinc-200/90 shadow-hairline">Ogilvy</span>
+                    <span class="px-2.5 py-1 bg-white rounded-md border border-zinc-200/90 shadow-hairline">Schwartz</span>
+                    <span class="px-2.5 py-1 bg-white rounded-md border border-zinc-200/90 shadow-hairline">Halbert</span>
+                    <span class="px-2.5 py-1 bg-white rounded-md border border-zinc-200/90 shadow-hairline">Hormozi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 1: O Diagnóstico (O Problema do Texto de IA Comum) -->
+        <section class="w-full mb-12 sm:mb-16">
+            <div class="text-center mb-5 sm:mb-6">
+                <span class="text-[11px] font-bold text-brand-red uppercase tracking-wider block mb-1">O Diagnóstico</span>
+                <h2 class="text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 leading-tight">
+                    O seu cliente sabe quando foi a IA que escreveu.
+                </h2>
+            </div>
+            
+            <p class="text-zinc-600 text-xs xs:text-sm sm:text-base leading-relaxed text-center mb-6 sm:mb-8 max-w-lg mx-auto">
+                Modelos de linguagem foram treinados na média estatística da internet. Sem parâmetros rigorosos de resposta direta, o resultado é sempre o mesmo: introduções vazias, ritmo previsível e aquele tom professoral que ninguém lê.
+            </p>
+
+            <!-- Cards de Contraste Lado a Lado / Empilhados no mobile -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
+                <!-- Errado: IA Sem Método -->
+                <div class="bg-white border border-zinc-200/90 rounded-xl p-4 flex flex-col justify-between shadow-hairline">
+                    <div>
+                        <div class="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+                            <span class="w-2 h-2 rounded-full bg-zinc-300 flex-shrink-0"></span>
+                            IA Sem Parâmetro
+                        </div>
+                        <p class="text-xs text-zinc-500 italic leading-relaxed">
+                            "No cenário cada vez mais dinâmico e competitivo de hoje, é fundamental adotar soluções inovadoras que possam impulsionar o seu negócio para o próximo patamar..."
+                        </p>
+                    </div>
+                    <span class="text-[11px] font-medium text-zinc-400 mt-3 pt-2 border-t border-zinc-100 block">
+                        Resultado: Clichê ignorado.
+                    </span>
+                </div>
+
+                <!-- Correto: Com SolarOS -->
+                <div class="bg-white border border-emerald-200 rounded-xl p-4 flex flex-col justify-between relative overflow-hidden shadow-hairline">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-50 rounded-bl-full pointer-events-none -mr-6 -mt-6"></div>
+                    <div>
+                        <div class="flex items-center gap-1.5 text-xs font-bold text-brand-red uppercase tracking-wider mb-2">
+                            <span class="w-2 h-2 rounded-full bg-brand-red flex-shrink-0"></span>
+                            Com o SolarOS
+                        </div>
+                        <p class="text-xs text-zinc-800 font-medium leading-relaxed">
+                            "Se você precisa colocar novos clientes no caixa esta semana, pare de postar dicas. Faça esta oferta específica para quem já acompanha você em silêncio..."
+                        </p>
+                    </div>
+                    <span class="text-[11px] font-semibold text-brand-red mt-3 pt-2 border-t border-emerald-50 block">
+                        Resultado: Conexão e clique imediato.
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: O Motor do SolarOS (4 Pilares Fundamentais) -->
+        <section class="w-full mb-12 sm:mb-16">
+            <div class="text-center mb-5 sm:mb-6">
+                <span class="text-[11px] font-bold text-brand-red uppercase tracking-wider block mb-1">Engenharia Reversa</span>
+                <h2 class="text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 leading-tight">
+                    4 mestres do copywriting codificados para o seu chat.
+                </h2>
+                <p class="text-zinc-500 text-xs sm:text-sm mt-2">
+                    Não são prompts genéricos de uma linha. São frameworks inteiros com restrições de raciocínio.
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-2.5 sm:gap-3">
+                <!-- Skill 1 -->
+                <div class="bg-white border border-zinc-200/90 rounded-xl p-4 sm:p-5 shadow-hairline flex gap-3 sm:gap-4 items-start">
+                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-zinc-100 border border-zinc-200/80 flex items-center justify-center text-xs font-bold text-zinc-800 flex-shrink-0">
+                        01
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+                            <h3 class="font-bold text-sm sm:text-base text-zinc-900 leading-snug">Arquiteto de Ângulos & Consciência</h3>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 border border-zinc-200">Schwartz</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                            Mapeia o nível de sofisticação e consciência do seu público antes de escrever uma única linha. Cria ganchos que capturam a atenção de quem já viu de tudo.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Skill 2 -->
+                <div class="bg-white border border-zinc-200/90 rounded-xl p-4 sm:p-5 shadow-hairline flex gap-3 sm:gap-4 items-start">
+                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-zinc-100 border border-zinc-200/80 flex items-center justify-center text-xs font-bold text-zinc-800 flex-shrink-0">
+                        02
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+                            <h3 class="font-bold text-sm sm:text-base text-zinc-900 leading-snug">O Gerador de Venda Direta</h3>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 border border-zinc-200">Halbert</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                            Ritmo veloz, linguagem coloquial autêntica e técnicas de escorregador mental. Conduz o leitor parágrafo por parágrafo até a ação final.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Skill 3 -->
+                <div class="bg-white border border-zinc-200/90 rounded-xl p-4 sm:p-5 shadow-hairline flex gap-3 sm:gap-4 items-start">
+                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-zinc-100 border border-zinc-200/80 flex items-center justify-center text-xs font-bold text-zinc-800 flex-shrink-0">
+                        03
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+                            <h3 class="font-bold text-sm sm:text-base text-zinc-900 leading-snug">Calibrador de Oferta Irrecusável</h3>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 border border-zinc-200">Hormozi</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                            Transforma serviços comuns em propostas de alto valor. Equaciona garantias, empilhamento de bônus e escassez lógica para eliminar hesitação de compra.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Skill 4 -->
+                <div class="bg-white border border-zinc-200/90 rounded-xl p-4 sm:p-5 shadow-hairline flex gap-3 sm:gap-4 items-start">
+                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-zinc-100 border border-zinc-200/80 flex items-center justify-center text-xs font-bold text-zinc-800 flex-shrink-0">
+                        04
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+                            <h3 class="font-bold text-sm sm:text-base text-zinc-900 leading-snug">O Editor Implacável</h3>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 border border-zinc-200">Ogilvy</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                            Elimina adjetivos inflados, jargões corporativos e clichês de IA. Cada frase é lapidada para clareza comercial imediata e tom autoral natural.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 3: Para Quem É / Para Quem Não É -->
+        <section class="w-full mb-12 sm:mb-16">
+            <div class="text-center mb-5 sm:mb-6">
+                <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">Filtro de Alinhamento</span>
+                <h2 class="text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 leading-tight">
+                    O SolarOS é para você?
+                </h2>
+            </div>
+
+            <div class="space-y-3">
+                <!-- Sim -->
+                <div class="bg-white border border-zinc-200/90 rounded-xl p-4 sm:p-5 shadow-hairline">
+                    <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <span class="text-emerald-600 text-sm font-black">✓</span> É perfeito para quem:
+                    </h3>
+                    <ul class="text-xs sm:text-sm text-zinc-600 space-y-2.5">
+                        <li class="flex items-start gap-2">
+                            <span class="text-zinc-400 font-mono text-xs flex-shrink-0 mt-0.5">•</span>
+                            <span><strong>Copywriters e Redatores</strong> que querem acelerar o primeiro rascunho sem perder sua assinatura autoral.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-zinc-400 font-mono text-xs flex-shrink-0 mt-0.5">•</span>
+                            <span><strong>Produtores e Creators</strong> que precisam redigir páginas, e-mails e anúncios que realmente pagam a conta.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-zinc-400 font-mono text-xs flex-shrink-0 mt-0.5">•</span>
+                            <span><strong>Agências e Freelancers</strong> cansados de revisar entregas genéricas geradas por IA básica.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Não -->
+                <div class="bg-white border border-zinc-200/90 rounded-xl p-4 sm:p-5 shadow-hairline">
+                    <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <span class="text-zinc-400 text-sm font-black">✕</span> Não é recomendado se você:
+                    </h3>
+                    <ul class="text-xs sm:text-sm text-zinc-500 space-y-2.5">
+                        <li class="flex items-start gap-2">
+                            <span class="text-zinc-300 font-mono text-xs flex-shrink-0 mt-0.5">•</span>
+                            <span>Espera que um botão faça todo o pensamento estratégico sem você precisar ler e calibrar o contexto do seu produto.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-zinc-300 font-mono text-xs flex-shrink-0 mt-0.5">•</span>
+                            <span>Prefere continuar reutilizando templates saturados de anos atrás.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 4: Bloco de Oferta e Preço (Checkout) -->
+        <section id="comprar" class="w-full bg-white border border-zinc-200/90 rounded-2xl p-5 sm:p-8 mb-8 sm:mb-10 text-center shadow-lift relative">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-brand-red text-[10px] xs:text-[11px] font-bold uppercase tracking-wider mb-4">
+                Condição Especial de Lançamento
+            </div>
+
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-zinc-950 tracking-tight mb-2">
+                Kit Completo SolarOS
+            </h2>
+            <p class="text-zinc-500 text-xs sm:text-sm mb-6 max-w-sm mx-auto">
+                Acesso imediato e vitalício às 4 skills, documentação de integração e calibrador de tom de voz.
+            </p>
+
+            <!-- Lista de Entregáveis -->
+            <div class="w-full max-w-sm mx-auto bg-zinc-50/80 rounded-xl border border-zinc-200/80 p-3.5 sm:p-4 mb-6 text-left">
+                <div class="text-[11px] xs:text-xs font-bold text-zinc-900 uppercase tracking-wider mb-3">O que você recebe:</div>
+                <ul class="text-xs sm:text-sm text-zinc-700 space-y-2">
+                    <li class="flex items-center gap-2">
+                        <span class="text-brand-red font-bold flex-shrink-0">✓</span>
+                        <span>As 4 Skills Parametrizadas (Claude e ChatGPT)</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-brand-red font-bold flex-shrink-0">✓</span>
+                        <span>Módulo de Calibragem de Tom de Voz Autoral</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-brand-red font-bold flex-shrink-0">✓</span>
+                        <span>Guia Rápido de Instalação em 2 Minutos</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-brand-red font-bold flex-shrink-0">✓</span>
+                        <span>Filtros de Complacência para Meta e Google Ads</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-brand-red font-bold flex-shrink-0">✓</span>
+                        <span>Acesso vitalício e atualizações futuras</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bloco de Preço -->
+            <div class="mb-6">
+                <span class="text-xs text-zinc-400 line-through block">De R$ 197,00</span>
+                <div class="flex items-baseline justify-center gap-1 text-zinc-950">
+                    <span class="text-base font-semibold">R$</span>
+                    <span class="text-4xl sm:text-5xl font-black tracking-tight">47</span>
+                    <span class="text-xs text-zinc-500 font-medium">à vista</span>
+                </div>
+                <span class="text-[11px] text-zinc-500 mt-1 block">ou em até 5x de R$ 10,23 no cartão</span>
+            </div>
+
+            <!-- CTA Principal -->
+            <a href="https://pay.hotmart.com" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-darkred active:scale-[0.99] transition-all text-white font-extrabold text-sm sm:text-base py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl shadow-hairline">
+                <span>QUERO O SolarOS AGORA</span>
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </a>
+
+            <!-- Selos de Segurança -->
+            <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-[10px] xs:text-[11px] text-zinc-400 mt-4">
+                <span class="flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5 text-zinc-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    Pagamento 100% Seguro
+                </span>
+                <span class="text-zinc-200 select-none">•</span>
+                <span>Acesso Imediato</span>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 5: Garantia Incondicional -->
+        <div class="w-full bg-white border border-zinc-200/90 rounded-xl p-4 sm:p-5 mb-12 sm:mb-16 flex items-start gap-3 sm:gap-3.5 shadow-hairline">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-brand-red flex-shrink-0">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+                <h3 class="text-xs sm:text-sm font-bold text-zinc-900 mb-1 leading-snug">Garantia Blindada de 7 Dias</h3>
+                <p class="text-xs text-zinc-600 leading-relaxed">
+                    Instale o kit e use na sua próxima copy. Se os seus textos não ficarem imediatamente mais afiados e autênticos, basta solicitar reembolso direto. Devolvemos 100% do valor.
+                </p>
+            </div>
+        </div>
+
+        <!-- Headline Intermediária do FAQ -->
+        <div class="text-center mb-6 sm:mb-8">
+            <h2 class="text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-brand-red mb-1.5">
+                Antes da próxima frase.
+            </h2>
+            <p class="text-zinc-500 text-xs sm:text-sm">
+                As respostas para escolher com mais clareza.
+            </p>
+        </div>
+
+        <!-- 4. Seção de FAQ (Cards com Borda Fina e Acordeão Acessível) -->
+        <div id="faq" class="w-full flex flex-col gap-2 sm:gap-2.5 mb-14 sm:mb-16" role="region" aria-label="Perguntas Frequentes">
+
+            <!-- Card 1 -->
+            <div class="bg-white border border-zinc-200/90 rounded-xl overflow-hidden shadow-hairline transition-colors hover:border-zinc-300">
+                <button type="button" class="faq-item w-full px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between gap-3 text-left select-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/30" aria-expanded="false" aria-controls="faq-ans-1" id="faq-btn-1">
+                    <span class="font-bold text-zinc-900 text-sm sm:text-base leading-snug pr-1">Quem está por trás do SolarOS?</span>
+                    <span class="faq-icon text-brand-red text-xl font-bold leading-none flex-shrink-0" aria-hidden="true">+</span>
+                </button>
+                <div id="faq-ans-1" class="faq-accordion-body" role="region" aria-labelledby="faq-btn-1">
+                    <div class="min-h-0 overflow-hidden">
+                        <p class="text-zinc-600 text-xs sm:text-sm leading-relaxed px-4 sm:px-5 pb-4 pt-0">
+                            O SolarOS foi concebido pela equipe de estrategistas da Haarpa / Solar, sintetizando décadas de literatura e frameworks reais de venda direta em prompts parametrizados para LLMs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white border border-zinc-200/90 rounded-xl overflow-hidden shadow-hairline transition-colors hover:border-zinc-300">
+                <button type="button" class="faq-item w-full px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between gap-3 text-left select-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/30" aria-expanded="false" aria-controls="faq-ans-2" id="faq-btn-2">
+                    <span class="font-bold text-zinc-900 text-sm sm:text-base leading-snug pr-1">Como posso pedir ajuda?</span>
+                    <span class="faq-icon text-brand-red text-xl font-bold leading-none flex-shrink-0" aria-hidden="true">+</span>
+                </button>
+                <div id="faq-ans-2" class="faq-accordion-body" role="region" aria-labelledby="faq-btn-2">
+                    <div class="min-h-0 overflow-hidden">
+                        <p class="text-zinc-600 text-xs sm:text-sm leading-relaxed px-4 sm:px-5 pb-4 pt-0">
+                            Você terá acesso imediato à nossa comunidade exclusiva e ao suporte dedicado via chat e e-mail para tirar dúvidas sobre implementação dos prompts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white border border-zinc-200/90 rounded-xl overflow-hidden shadow-hairline transition-colors hover:border-zinc-300">
+                <button type="button" class="faq-item w-full px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between gap-3 text-left select-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/30" aria-expanded="false" aria-controls="faq-ans-3" id="faq-btn-3">
+                    <span class="font-bold text-zinc-900 text-sm sm:text-base leading-snug pr-1">Claude ou ChatGPT já não escrevem isso para mim?</span>
+                    <span class="faq-icon text-brand-red text-xl font-bold leading-none flex-shrink-0" aria-hidden="true">+</span>
+                </button>
+                <div id="faq-ans-3" class="faq-accordion-body" role="region" aria-labelledby="faq-btn-3">
+                    <div class="min-h-0 overflow-hidden">
+                        <p class="text-zinc-600 text-xs sm:text-sm leading-relaxed px-4 sm:px-5 pb-4 pt-0">
+                            Eles geram rascunhos médios e previsíveis. O SolarOS injeta restrições cognitivas, ritmo verbal e fórmulas de persuasão testadas para extrair o máximo das IAs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bg-white border border-zinc-200/90 rounded-xl overflow-hidden shadow-hairline transition-colors hover:border-zinc-300">
+                <button type="button" class="faq-item w-full px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between gap-3 text-left select-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/30" aria-expanded="false" aria-controls="faq-ans-4" id="faq-btn-4">
+                    <span class="font-bold text-zinc-900 text-sm sm:text-base leading-snug pr-1">O texto vai ficar com a minha voz?</span>
+                    <span class="faq-icon text-brand-red text-xl font-bold leading-none flex-shrink-0" aria-hidden="true">+</span>
+                </button>
+                <div id="faq-ans-4" class="faq-accordion-body" role="region" aria-labelledby="faq-btn-4">
+                    <div class="min-h-0 overflow-hidden">
+                        <p class="text-zinc-600 text-xs sm:text-sm leading-relaxed px-4 sm:px-5 pb-4 pt-0">
+                            Sim. O kit possui módulos de calibragem de tom de voz para adequar a cadência e o vocabulário à sua persona ou à marca que você representa.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="bg-white border border-zinc-200/90 rounded-xl overflow-hidden shadow-hairline transition-colors hover:border-zinc-300">
+                <button type="button" class="faq-item w-full px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between gap-3 text-left select-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/30" aria-expanded="false" aria-controls="faq-ans-5" id="faq-btn-5">
+                    <span class="font-bold text-zinc-900 text-sm sm:text-base leading-snug pr-1">E as promessas e as regras de publicidade?</span>
+                    <span class="faq-icon text-brand-red text-xl font-bold leading-none flex-shrink-0" aria-hidden="true">+</span>
+                </button>
+                <div id="faq-ans-5" class="faq-accordion-body" role="region" aria-labelledby="faq-btn-5">
+                    <div class="min-h-0 overflow-hidden">
+                        <p class="text-zinc-600 text-xs sm:text-sm leading-relaxed px-4 sm:px-5 pb-4 pt-0">
+                            Todas as diretrizes acompanham filtros de complacência para anúncios pagos (Meta Ads e Google Ads), evitando bloqueios de contas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="bg-white border border-zinc-200/90 rounded-xl overflow-hidden shadow-hairline transition-colors hover:border-zinc-300">
+                <button type="button" class="faq-item w-full px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between gap-3 text-left select-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/30" aria-expanded="false" aria-controls="faq-ans-6" id="faq-btn-6">
+                    <span class="font-bold text-zinc-900 text-sm sm:text-base leading-snug pr-1">Por que não ler os clássicos por conta própria?</span>
+                    <span class="faq-icon text-brand-red text-xl font-bold leading-none flex-shrink-0" aria-hidden="true">+</span>
+                </button>
+                <div id="faq-ans-6" class="faq-accordion-body" role="region" aria-labelledby="faq-btn-6">
+                    <div class="min-h-0 overflow-hidden">
+                        <p class="text-zinc-600 text-xs sm:text-sm leading-relaxed px-4 sm:px-5 pb-4 pt-0">
+                            Você deve ler! No entanto, transformar 500 páginas de teoria em instruções executáveis de contexto que a IA compreende sem alucinar exige centenas de horas de engenharia de prompt.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="bg-white border border-zinc-200/90 rounded-xl overflow-hidden shadow-hairline transition-colors hover:border-zinc-300">
+                <button type="button" class="faq-item w-full px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between gap-3 text-left select-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/30" aria-expanded="false" aria-controls="faq-ans-7" id="faq-btn-7">
+                    <span class="font-bold text-zinc-900 text-sm sm:text-base leading-snug pr-1">Isso é um curso?</span>
+                    <span class="faq-icon text-brand-red text-xl font-bold leading-none flex-shrink-0" aria-hidden="true">+</span>
+                </button>
+                <div id="faq-ans-7" class="faq-accordion-body" role="region" aria-labelledby="faq-btn-7">
+                    <div class="min-h-0 overflow-hidden">
+                        <p class="text-zinc-600 text-xs sm:text-sm leading-relaxed px-4 sm:px-5 pb-4 pt-0">
+                            Não. É uma ferramenta de aplicação direta: comandos prontos, modelos de raciocínio e documentação técnica para copiar e rodar em minutos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- 5. Rodapé Institucional Sólido -->
+    <footer class="w-full bg-brand-red text-white py-10 sm:py-12 px-5 sm:px-6 flex flex-col items-center justify-center text-center">
+        <div class="flex items-center gap-2 mb-1.5">
+            <svg class="w-6 h-6 text-white flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 10l8 4-8 4v-8zm8-6l8 6-8 6V4z" />
+            </svg>
+            <span class="font-extrabold text-xl tracking-tight uppercase">Solar</span>
+        </div>
+        <p class="text-[11px] tracking-widest text-white uppercase font-bold">
+            COPYWRITING
+        </p>
+    </footer>
+
+    <!-- 6. Sticky Bottom Conversion Bar (Barra Fixa com Respeito a Safe Area Mobile) -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-zinc-200/90 px-4 sm:px-6 pt-2.5 safe-bottom shadow-[0_-4px_16px_rgba(0,0,0,0.03)]">
+        <div class="max-w-xl mx-auto flex items-center justify-between gap-2.5 sm:gap-3">
+            <div class="flex flex-col min-w-0">
+                <span class="text-zinc-900 font-extrabold text-sm sm:text-lg leading-tight tracking-tight truncate">SolarOS</span>
+                <span class="text-zinc-500 text-[10px] xs:text-[11px] sm:text-xs font-medium truncate">R$ 47 à vista • Vitalício</span>
+            </div>
+            
+            <a href="#comprar" class="inline-flex items-center justify-center gap-1.5 bg-brand-red hover:bg-brand-darkred active:scale-[0.98] transition-all text-white font-bold text-xs sm:text-sm px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl shadow-hairline flex-shrink-0 whitespace-nowrap">
+                <span>Ver o kit</span>
+                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Script Minimalista para FAQ (acessível com suporte a teclado e aria-expanded) -->
+    <script>
+        document.querySelectorAll('.faq-item').forEach(button => {
+            button.addEventListener('click', () => {
+                const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                
+                // Fecha outros itens para manter estética limpa
+                document.querySelectorAll('.faq-item').forEach(other => {
+                    other.setAttribute('aria-expanded', 'false');
+                });
+
+                // Alterna o item atual
+                button.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+            });
+        });
+    </script>
+</body>
+</html>
